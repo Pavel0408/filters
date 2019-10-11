@@ -4,7 +4,7 @@ import {
   REMOVE_FILTER_FROM_ACTIVE_FILTERS,
   CHANGE_FILTER_IN_ACTIVE_FILTERS,
   REQUEST_DATA_WITH_FILTERS,
-  PAGE_GET_SUCCESS
+  OPEN_FILTERS
 } from "./const";
 
 export function getAllFiltersSuccess(payload) {
@@ -46,10 +46,10 @@ export function requestDataWithFilters(payload) {
   };
 }
 
-export function pageGetSuccess(payload) {
+export function openFilters(payload) {
   //payload: page name : String
   return {
-    type: PAGE_GET_SUCCESS,
+    type: OPEN_FILTERS,
     payload
   };
 }

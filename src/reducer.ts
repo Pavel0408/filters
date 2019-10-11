@@ -3,7 +3,7 @@ import {
   ADD_FILTER_TO_ACTIVE_FILTERS,
   REMOVE_FILTER_FROM_ACTIVE_FILTERS,
   CHANGE_FILTER_IN_ACTIVE_FILTERS,
-  PAGE_GET_SUCCESS
+  OPEN_FILTERS
 } from "./actions/const";
 
 const newFilter = {
@@ -28,14 +28,17 @@ const guid = () => {
 
 const filterReducer = (state: any = defaultState, action: any) => {
   switch (action.type) {
-    case PAGE_GET_SUCCESS: {
-      const newFilters = { ...state.filters };
-      newFilters[action.payload] = [{...newFilter, key: guid()}]
-      
-      return {
-        ...state,
-        filters: newFilters
-      };
+    case OPEN_FILTERS: {
+      if (state.filters[action.payload]) {
+        return state
+      } else {
+        const newFilters = { ...state.filters };
+        newFilters[action.payload] = [{...newFilter, key: guid()}]
+        return {
+          ...state,
+          filters: newFilters
+        };
+      }
     }
 
     case GET_ALL_FILTERS_SUCCESS:

@@ -13,13 +13,13 @@ import {
   Button,
   SubmitButton,
 } from "./styled";
-import { FilterRow } from './FilterRow'
+import FilterRow from './FilterRow'
 import {
   changeFilterInActiveFilters,
   addFilterToActiveFilters,
   removeFilterFromActiveFilters,
   requestDataWithFilters,
-  pageGetSuccess
+  openFilters
 } from './actions'
 
 
@@ -33,7 +33,7 @@ interface IFilter {
 interface IOwnProps {
   filters: IFilter[];
   name: string;
-  resetFiltersEveryMount: boolean
+  
 }
 
 interface IFilterProps {
@@ -43,8 +43,8 @@ interface IFilterProps {
   handleAddFilter: any;
   handleRemoveFilter: any;
   handleSubmit: any;
-  pageGetSuccess: any;
-  resetFiltersEveryMount: boolean
+  openFilters: any;
+  name: string
 }
 
 const Filter: React.SFC<IFilterProps> = ({
@@ -54,17 +54,13 @@ const Filter: React.SFC<IFilterProps> = ({
   handleAddFilter,
   handleRemoveFilter,
   handleSubmit,
-  pageGetSuccess,
-  resetFiltersEveryMount = false
+  openFilters,
+  name
 }: IFilterProps): any => {
 
   useEffect(() => {
-    if (resetFiltersEveryMount) {
-      pageGetSuccess()
-    } else {
-      if (!activeFilters.length) pageGetSuccess() 
-    }
-  }, [activeFilters.lenght])
+    openFilters()
+  }, [])
 
   return (
     <Wrapper>
@@ -87,11 +83,9 @@ const Filter: React.SFC<IFilterProps> = ({
             return (
               <FilterRow
                 id={id}
-                handleFilterChange={handleFilterChange}
-                handleDelete={() => handleRemoveFilter({ id })}
                 filters={filters}
                 filter={filter}
-                // key={`${filter.column}${filter.condition}`}
+                name={name}
                 key={filter.key}
               />
             );
@@ -125,7 +119,7 @@ const mapDispatchToProps = (dispatch, { name }: IOwnProps) => {
     handleAddFilter: () => dispatch(addFilterToActiveFilters({name})),
     handleRemoveFilter: (params) => dispatch(removeFilterFromActiveFilters({...params, name})),
     handleSubmit: (params) => dispatch(requestDataWithFilters({...params, name})),
-    pageGetSuccess: () => dispatch(pageGetSuccess(name))
+    openFilters: () => dispatch(openFilters(name))
   }
 }
 

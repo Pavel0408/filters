@@ -31,7 +31,6 @@ const PageThree = ({
     <Filter
       filters={mappedFilters}
       name={ pageName }
-      resetFiltersEveryMount={ false }
       />
     </>
   );

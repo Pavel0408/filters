@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux'
+
 import {
   Select,
   SelectOption,
   FilterField,
   Button
 } from "./styled";
+import {
+  changeFilterInActiveFilters,
+  removeFilterFromActiveFilters,
+} from './actions'
 
 
 
-export const FilterRow = ({
+const FilterRow = ({
   filters,
   filter,
   handleDelete,
@@ -34,6 +40,9 @@ export const FilterRow = ({
 
   const Element = currentFilter ? currentFilter.Element : null;
   const conditions = currentFilter ? currentFilter.conditions : null;
+
+  console.log('rerender filter id ', id)
+
 
   return (
     <div>
@@ -91,7 +100,18 @@ export const FilterRow = ({
         )}
       </FilterField>
 
-      <Button onClick={handleDelete}>Delete</Button>
+      <Button onClick={() => handleDelete({ id })}>Delete</Button>
     </div>
   );
 };
+
+
+
+const mapDispatchToProps = (dispatch, { name }: any) => {
+  return {
+    handleFilterChange: (params) => dispatch(changeFilterInActiveFilters({...params, name})),
+    handleDelete: (params) => dispatch(removeFilterFromActiveFilters({...params, name})),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(FilterRow)

@@ -31,7 +31,6 @@ const PageTwo = ({
     <Filter
       filters={mappedFilters}
       name={ pageName }
-      resetFiltersEveryMount={ false }
       />
     </>
   );
