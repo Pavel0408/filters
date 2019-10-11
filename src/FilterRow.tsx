@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Select,
   SelectOption,
@@ -8,36 +8,32 @@ import {
 
 
 
-export const FilterRowWrapper = React.memo(({
+export const FilterRow = ({
   filters,
   filter,
   handleDelete,
   id,
-  handleFilterChange
+  handleFilterChange,
 }) => {
+  
+  const [currentFilter, changeCurrentFilter] = useState(null) 
 
-  const filterRef = useRef(null);
-  console.log(filterRef.current)
+  useEffect(() => {
+    if (filter.column && !currentFilter) {
+      changeCurrentFilter(filters.find(f => f.field === filter.column))
+    }
+  })
+  
+
   const handleChange = (value, field) => {
     handleFilterChange({ field, value, id });
     if (field === "column") {
       handleFilterChange({ field: "condition", value: "", id });
-      const filter = filters.find(f => f.field === value);
-      
-      // const { conditions, Element } = filters.find(f => f.field === value);
-      // handleFilterChange({ field: "conditions", value: conditions, id });
-      // handleFilterChange({ field: "Element", value: Element, id });
-
-      filterRef.current = filter;
-
     }
   };
 
-  // console.log(filterRef.current)
-
-  const Element  = filterRef.current ? filterRef.current.Element : null;
-  const conditions = filterRef.current ? filterRef.current.conditions : null;
-  console.log(filterRef)
+  const Element = currentFilter ? currentFilter.Element : null;
+  const conditions = currentFilter ? currentFilter.conditions : null;
 
   return (
     <div>
@@ -71,7 +67,7 @@ export const FilterRowWrapper = React.memo(({
           {!filter.condition && (
             <SelectOption selected>Please select...</SelectOption>
           )}
-          {conditions &&
+          {filter.column && conditions &&
             Object.entries(conditions).map(
               ([condition, { displayName }]: any) => (
                 <SelectOption
@@ -86,7 +82,7 @@ export const FilterRowWrapper = React.memo(({
         </Select>
       </FilterField>
         <FilterField>
-      {filter.condition && conditions[filter.condition].hasValue && (
+      {Element && filter.condition && conditions[filter.condition].hasValue && (
           <Element
             handleChange={(value) => handleChange(value, "value")}
             value={filter.value}
@@ -98,4 +94,4 @@ export const FilterRowWrapper = React.memo(({
       <Button onClick={handleDelete}>Delete</Button>
     </div>
   );
-});
+};

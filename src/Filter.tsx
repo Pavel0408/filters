@@ -13,7 +13,7 @@ import {
   Button,
   SubmitButton,
 } from "./styled";
-import { FilterRowWrapper } from './filterRowWrapper'
+import { FilterRow } from './FilterRow'
 import {
   changeFilterInActiveFilters,
   addFilterToActiveFilters,
@@ -85,12 +85,13 @@ const Filter: React.SFC<IFilterProps> = ({
           </FiltersHeader>
           {activeFilters.map((filter, id) => {
             return (
-              <FilterRowWrapper
+              <FilterRow
                 id={id}
                 handleFilterChange={handleFilterChange}
                 handleDelete={() => handleRemoveFilter({ id })}
                 filters={filters}
                 filter={filter}
+                // key={`${filter.column}${filter.condition}`}
                 key={filter.key}
               />
             );
@@ -121,7 +122,7 @@ const mapStateToProps = (state, ownProps: IOwnProps) => {
 const mapDispatchToProps = (dispatch, { name }: IOwnProps) => {
   return {
     handleFilterChange: (params) => dispatch(changeFilterInActiveFilters({...params, name})),
-    handleAddFilter: (params) => dispatch(addFilterToActiveFilters({...params, name})),
+    handleAddFilter: () => dispatch(addFilterToActiveFilters({name})),
     handleRemoveFilter: (params) => dispatch(removeFilterFromActiveFilters({...params, name})),
     handleSubmit: (params) => dispatch(requestDataWithFilters({...params, name})),
     pageGetSuccess: () => dispatch(pageGetSuccess(name))
