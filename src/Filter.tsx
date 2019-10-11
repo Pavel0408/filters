@@ -15,9 +15,7 @@ import {
 } from "./styled";
 import FilterRow from './FilterRow'
 import {
-  changeFilterInActiveFilters,
   addFilterToActiveFilters,
-  removeFilterFromActiveFilters,
   requestDataWithFilters,
   openFilters
 } from './actions'
@@ -39,9 +37,7 @@ interface IOwnProps {
 interface IFilterProps {
   filters: IFilter[];
   activeFilters: any;
-  handleFilterChange: any;
   handleAddFilter: any;
-  handleRemoveFilter: any;
   handleSubmit: any;
   openFilters: any;
   name: string
@@ -50,9 +46,7 @@ interface IFilterProps {
 const Filter: React.SFC<IFilterProps> = ({
   filters,
   activeFilters = [],
-  handleFilterChange,
   handleAddFilter,
-  handleRemoveFilter,
   handleSubmit,
   openFilters,
   name
@@ -115,9 +109,7 @@ const mapStateToProps = (state, ownProps: IOwnProps) => {
 
 const mapDispatchToProps = (dispatch, { name }: IOwnProps) => {
   return {
-    handleFilterChange: (params) => dispatch(changeFilterInActiveFilters({...params, name})),
     handleAddFilter: () => dispatch(addFilterToActiveFilters({name})),
-    handleRemoveFilter: (params) => dispatch(removeFilterFromActiveFilters({...params, name})),
     handleSubmit: (params) => dispatch(requestDataWithFilters({...params, name})),
     openFilters: () => dispatch(openFilters(name))
   }
